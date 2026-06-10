@@ -1,0 +1,203 @@
+.app {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Map fills the screen; the panel floats over it. */
+.map {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+}
+
+.panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+  width: 370px;
+  max-width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  background: #ffffff;
+  color: #1f2937;
+  box-shadow: -6px 0 24px rgba(0, 0, 0, 0.15);
+  padding: 18px 18px 32px;
+}
+
+.panel__head h1 {
+  font-size: 1.3rem;
+  line-height: 1.2;
+  margin: 0 0 4px;
+}
+.panel__sub {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0;
+}
+.tool {
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  color: #111827;
+  border-radius: 8px;
+  padding: 8px 11px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.tool:hover {
+  border-color: #9ca3af;
+}
+.tool--on {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #fff;
+}
+
+.hint {
+  color: #6b7280;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.hint--draw {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e40af;
+  padding: 10px 12px;
+  border-radius: 8px;
+}
+.hint--error {
+  color: #b91c1c;
+}
+
+/* Result */
+.score {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 8px 0 14px;
+}
+.score__ring {
+  flex: 0 0 auto;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+}
+.score__band {
+  font-weight: 700;
+}
+.score__note {
+  color: #6b7280;
+  font-size: 0.8rem;
+}
+
+.result h3 {
+  font-size: 0.95rem;
+  margin: 18px 0 8px;
+}
+.factors {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.factors li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 0;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.88rem;
+}
+.factors span {
+  color: #6b7280;
+}
+.factors strong {
+  text-align: right;
+  font-weight: 600;
+}
+
+.history__line {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0 0 8px;
+}
+.spark {
+  display: block;
+  max-width: 100%;
+}
+.history__cap {
+  color: #9ca3af;
+  font-size: 0.75rem;
+  margin: 4px 0 0;
+}
+
+.disclaimer {
+  margin-top: 18px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #7f1d1d;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+.disclaimer a {
+  color: #b91c1c;
+  text-decoration: underline;
+}
+
+.reference {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin: 14px 0 0;
+}
+.reference a {
+  color: #2563eb;
+  text-decoration: underline;
+}
+.reference__scale {
+  color: #9ca3af;
+  font-size: 0.75rem;
+}
+
+/* Risk-colored map pin */
+.risk-pin__dot {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
+}
+
+/* Phone: panel becomes a bottom sheet */
+@media (max-width: 640px) {
+  .panel {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 58%;
+    box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.18);
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+  }
+}
