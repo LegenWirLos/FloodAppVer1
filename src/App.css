@@ -66,6 +66,144 @@
   color: #fff;
 }
 
+/* Auth bar */
+.authbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #eef2f7;
+  font-size: 0.85rem;
+}
+.authbar--muted {
+  color: #9ca3af;
+}
+.authbar__who {
+  color: #374151;
+}
+.authbar--form {
+  flex-direction: column;
+  align-items: stretch;
+}
+.authbar__row {
+  display: flex;
+  gap: 8px;
+}
+.authbar__row input {
+  flex: 1;
+  min-width: 0;
+  padding: 7px 9px;
+  font-size: 0.85rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-family: inherit;
+}
+.authbar__err {
+  color: #b91c1c;
+  font-size: 0.8rem;
+}
+
+.panel__section {
+  font-size: 0.95rem;
+  margin: 18px 0 8px;
+}
+
+/* Save-plot form */
+.saveform {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.saveform input,
+.saveform textarea {
+  padding: 8px 10px;
+  font-size: 0.85rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-family: inherit;
+  resize: vertical;
+}
+.saveform__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.saveform__ok {
+  color: #16a34a;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* Saved-plots list */
+.plots {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.plot {
+  border: 1px solid #eef2f7;
+  border-radius: 10px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.plot__main {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  width: 100%;
+  font-family: inherit;
+}
+.plot__dot {
+  flex: 0 0 auto;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-top: 3px;
+}
+.plot__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.plot__label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #111827;
+}
+.plot__notes {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+.plot__meta {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  text-transform: capitalize;
+}
+.plot__actions {
+  display: flex;
+  gap: 6px;
+}
+.plot input,
+.plot textarea {
+  padding: 7px 9px;
+  font-size: 0.85rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-family: inherit;
+}
+
 .hint {
   color: #6b7280;
   font-size: 0.9rem;

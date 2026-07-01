@@ -1,16 +1,25 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import MapView from "./components/MapView";
 import RiskPanel from "./components/RiskPanel";
+import AuthBar from "./components/AuthBar";
+import SavePlotForm from "./components/SavePlotForm";
+import SavedPlots from "./components/SavedPlots";
+import { useAuth } from "./hooks/useAuth";
 import { assessPoint, assessPolygon } from "./lib/floodRisk";
+import { savePlot, subscribePlots, updatePlot, deletePlot } from "./lib/plotsStore";
+import { centroid } from "./lib/geo";
 import "./App.css";
 
 export default function App() {
+  const auth = useAuth();
   const [mode, setMode] = useState("pin"); // "pin" | "draw" | "view"
   const [selection, setSelection] = useState(null);
   const [result, setResult] = useState(null);
   const [history, setHistory] = useState(null);
   const [status, setStatus] = useState("idle"); // idle | loading | done | error
   const [error, setError] = useState(null);
+  const [savedPlots, setSavedPlots] = useState([]);
+  const [flyTo, setFlyTo] = useState(null);
 
   const runAssessment = useCallback(async (sel) => {
     setStatus("loading");
@@ -57,17 +66,61 @@ export default function App() {
     setError(null);
   }, []);
 
+  // Live-subscribe to the signed-in user's saved plots.
+  useEffect(() => {
+    if (!auth.user) {
+      setSavedPlots([]);
+      return;
+    }
+    return subscribePlots(auth.user.uid, setSavedPlots);
+  }, [auth.user]);
+
+  const savePlotNow = useCallback(
+    async (label, notes) => {
+      if (!auth.user || !selection || result?.score == null) return;
+      const geometry =
+        selection.type === "pin" ? { point: selection.point } : { latlngs: selection.latlngs };
+      await savePlot(auth.user.uid, {
+        label,
+        notes,
+        type: selection.type,
+        geometry,
+        score: result.score,
+        band: result.band ?? "unknown",
+        province: result.province ?? null,
+      });
+    },
+    [auth.user, selection, result]
+  );
+
+  const openPlot = useCallback(
+    (plot) => {
+      const sel =
+        plot.type === "pin"
+          ? { type: "pin", point: plot.geometry.point }
+          : { type: "polygon", latlngs: plot.geometry.latlngs };
+      setSelection(sel);
+      setMode(plot.type === "polygon" ? "view" : "pin");
+      const center = sel.type === "pin" ? sel.point : centroid(sel.latlngs);
+      setFlyTo({ ...center }); // fresh object so the map re-centres each time
+      runAssessment(sel);
+    },
+    [runAssessment]
+  );
+
   return (
     <div className="app">
       <MapView
         mode={mode}
         selection={selection}
         band={result?.band}
+        flyTo={flyTo}
         onPick={handlePick}
         onPolygon={handlePolygon}
       />
 
       <aside className="panel">
+        <AuthBar auth={auth} />
         <header className="panel__head">
           <h1>Will my land flood?</h1>
           <p className="panel__sub">Find your land and see an estimated flood risk.</p>
@@ -110,6 +163,25 @@ export default function App() {
         )}
 
         <RiskPanel status={status} error={error} result={result} history={history} />
+
+        {auth.user && result?.score != null && (
+          <>
+            <h3 className="panel__section">Save this plot</h3>
+            <SavePlotForm onSave={savePlotNow} />
+          </>
+        )}
+
+        {auth.user && (
+          <>
+            <h3 className="panel__section">My plots</h3>
+            <SavedPlots
+              plots={savedPlots}
+              onOpen={openPlot}
+              onDelete={(id) => deletePlot(auth.user.uid, id)}
+              onRename={(id, label, notes) => updatePlot(auth.user.uid, id, { label, notes })}
+            />
+          </>
+        )}
       </aside>
     </div>
   );
